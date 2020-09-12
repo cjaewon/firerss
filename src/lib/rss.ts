@@ -1,14 +1,19 @@
-import octokit from "./octokit";
+import octokit from './octokit';
 
 export const getRssList = async() => {
-  const repo = process.env.repo;
-  if (!repo) throw new Error('Can\'t find repo env');
+  const repoName = process.env.repo || 'firerss';
 
-  const user = await octokit.users.getByUsername();
-  console.log(user);
-
-  octokit.repos.get({
-    owner: user.data.name,
-    repo,
+  const user = await octokit.users.getAuthenticated();
+  const file = await octokit.repos.getContent({
+    owner: user.data.login,
+    repo: repoName,
+    path: process.env.RSS_FILE || 'RSS.md',
   });
+  
+  const content = Buffer.from(file.data.content, 'base64').toString();
+  const regex = new RegExp(/<!--\sFIRERSS-CONFIG:START\s-->((.|\n)*)<!--\sFIRERSS-CONFIG:END\s-->/g);
+
+  if (!regex.test(content)) {
+    throw new Error('Can`t find FIRERSS-CONFIG:START, FIRERSS-CONFIG:END section');
+  }
 };

@@ -1,4 +1,3 @@
-import { match } from 'assert';
 import octokit from './octokit';
 
 export const getRssList = async() => {
@@ -23,6 +22,9 @@ export const getRssList = async() => {
   const matchs = regex.exec(content);
   if (!matchs) process.exit(); // No Data
 
-  const rssList = matchs[1].split('\n').filter(x => x.trim() !== '');
-  console.log(rssList);
+  const rssList = matchs[1].split('\n')
+    .filter(x => x.trim() !== '')
+    .map(x => x.trim());
+    
+  return rssList;
 };

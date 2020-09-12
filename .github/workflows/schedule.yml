@@ -31,4 +31,4 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       GITHUB_REPO: firerss
       RSS_FILE: RSS.md
-      lang: en # en or ko
+      LANG: en # en or ko

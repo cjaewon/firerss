@@ -20,6 +20,7 @@
     "@octokit/rest": "^18.0.5",
     "dotenv": "^8.2.0",
     "i18next": "^19.7.0",
+    "lodash.sample": "^4.2.1",
     "rss-parser": "^3.9.0"
   }
 }

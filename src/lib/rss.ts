@@ -1,16 +1,6 @@
 import octokit from './octokit';
 
-export const getRssList = async() => {
-  const repoName = process.env.repo || 'firerss';
-
-  const user = await octokit.users.getAuthenticated();
-  const file = await octokit.repos.getContent({
-    owner: user.data.login,
-    repo: repoName,
-    path: process.env.RSS_FILE || 'RSS.md',
-  });
-  
-  const content = Buffer.from(file.data.content, 'base64').toString();
+export const getRssList = async (content: string) => {
   const regex = new RegExp(/<!--\sFIRERSS-CONFIG:START\s-->((.|\n)*)<!--\sFIRERSS-CONFIG:END\s-->/g);
 
   if (!regex.test(content)) {

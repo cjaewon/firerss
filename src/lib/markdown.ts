@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import Parser from 'rss-parser';
 
 export const toMarkdown = (data: { [key: string]: Parser.Output} ) => {
@@ -7,7 +8,7 @@ export const toMarkdown = (data: { [key: string]: Parser.Output} ) => {
   for (const [key, feed] of Object.entries(data)) {
     const items = feed.items!.slice(0,5);
     markdown += `## ${feed.title}\n`;
-    markdown += `> Recently Posting : ${feed.items?.[0].pubDate || '😞 Not yet\n'}`
+    markdown += `> ${i18next.t('recently_posting')} : ${feed.items?.[0].pubDate || `😞 ${i18next.t('not_yet')}`}\n`;
 
     for (const item of items) {
       markdown += `- [\`${item.title}\`](${item.link})\n`;
@@ -27,8 +28,8 @@ export const toMarkdown = (data: { [key: string]: Parser.Output} ) => {
     return (new Date(y.pubDate!) as any) - (new Date(x.pubDate!) as any);
   });
 
-  recentlyMarkdown += '### Recently Post\n';
-  recentlyMarkdown += `> Recently Posting: ${new Date(recentlyPost[0].pubDate!)}\n`;
+  recentlyMarkdown += `### ${i18next.t('recently_post')}\n`;
+  recentlyMarkdown += `> ${i18next.t('recently_posting')}: ${new Date(recentlyPost[0].pubDate!)}\n`;
 
   for (const item of recentlyPost.slice(0, 5)) {
     recentlyMarkdown += `- [\`${item.title} - ${item.blogName}\`](${item.link})\n`;

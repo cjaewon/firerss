@@ -1,3 +1,4 @@
+import { match } from 'assert';
 import octokit from './octokit';
 
 export const getRssList = async() => {
@@ -16,4 +17,12 @@ export const getRssList = async() => {
   if (!regex.test(content)) {
     throw new Error('Can`t find FIRERSS-CONFIG:START, FIRERSS-CONFIG:END section');
   }
+
+  regex.lastIndex = 0;
+
+  const matchs = regex.exec(content);
+  if (!matchs) process.exit(); // No Data
+
+  const rssList = matchs[1].split('\n').filter(x => x.trim() !== '');
+  console.log(rssList);
 };

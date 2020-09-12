@@ -1,7 +1,9 @@
 import './lib/env';
-import './lib/i18n';
+import i18n from './lib/i18n';
 
 import Parser from 'rss-parser';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 import { getRssList } from './lib/rss';
 import { toMarkdown } from './lib/markdown';
@@ -10,6 +12,9 @@ import octokit from './lib/octokit';
 const parser = new Parser();
 
 async function main() {
+  await i18n();
+  dayjs.locale(process.env.LANG || 'en');
+
   const user = await octokit.users.getAuthenticated();
   const file = await octokit.repos.getContent({
     owner: user.data.login,
@@ -38,6 +43,8 @@ async function main() {
     /<!--\sFIRERSS-VIEW:START\s-->((.|\n)*)<!--\sFIRERSS-VIEW:END\s-->/g,
     `<!--\sFIRERSS-VIEW:START\s-->\n${markdown}\n<!--\sFIRERSS-VIEW:END\s-->`
   );
+
+    console.log(result);
 
   await octokit.repos.createOrUpdateFileContents({
     owner: user.data.login,

@@ -1,5 +1,6 @@
 import i18next from 'i18next';
 import Parser from 'rss-parser';
+import dayjs from 'dayjs';
 
 export const toMarkdown = (data: { [key: string]: Parser.Output} ) => {
   let markdown = '';
@@ -8,7 +9,7 @@ export const toMarkdown = (data: { [key: string]: Parser.Output} ) => {
   for (const [key, feed] of Object.entries(data)) {
     const items = feed.items!.slice(0,5);
     markdown += `## ${feed.title}\n`;
-    markdown += `> ${i18next.t('recently_posting')} : ${feed.items?.[0].pubDate || `😞 ${i18next.t('not_yet')}`}\n`;
+    markdown += `> ${i18next.t('recently_posting')} : ${feed.items?.[0] && dayjs(feed.items?.[0].pubDate).format('MMM,DD YYYY') || `😞 ${i18next.t('not_yet')}`}\n`;
 
     for (const item of items) {
       markdown += `- [\`${item.title}\`](${item.link})\n`;
@@ -29,7 +30,7 @@ export const toMarkdown = (data: { [key: string]: Parser.Output} ) => {
   });
 
   recentlyMarkdown += `### ${i18next.t('recently_post')}\n`;
-  recentlyMarkdown += `> ${i18next.t('recently_posting')}: ${new Date(recentlyPost[0].pubDate!)}\n`;
+  recentlyMarkdown += `> ${i18next.t('recently_posting')}: ${dayjs(recentlyPost[0].pubDate!).format('MMM,DD YYYY')}\n`;
 
   for (const item of recentlyPost.slice(0, 5)) {
     recentlyMarkdown += `- [\`${item.title} - ${item.blogName}\`](${item.link})\n`;

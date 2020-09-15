@@ -44,8 +44,6 @@ async function main() {
     `<!--\sFIRERSS-VIEW:START\s-->\n${markdown}\n<!--\sFIRERSS-VIEW:END\s-->`
   );
 
-    console.log(result);
-
   await octokit.repos.createOrUpdateFileContents({
     owner: user.data.login,
     repo: process.env.repo || 'firerss',

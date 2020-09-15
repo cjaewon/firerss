@@ -5,3 +5,7 @@ https://v2.velog.io/rss/@chris
 
 <!-- FIRERSS-VIEW:START -->
 <!-- FIRERSS-VIEW:END -->
+
+<!-- FIRERSS-DB:START
+DO NOT CHANGE
+FIRERSS-DB:END -->

@@ -1,3 +1,4 @@
+import { TextEncoder } from 'util';
 import octokit from './octokit';
 
 export const getRssList = async (content: string) => {
@@ -17,4 +18,20 @@ export const getRssList = async (content: string) => {
     .map(x => x.trim());
     
   return rssList;
+};
+
+export const updateCheck = async (content: string) => {
+  const regex = new RegExp(/<!--\sFIRERSS-VIEW:START\s-->((.|\n)*)<!--\sFIRERSS-VIEW:END\s-->/g);
+
+  if (!regex.test(content)) {
+    throw new Error('Can`t find FIRERSS-VIEW:START, FIRERSS-VIEW:END section');
+  }
+
+  regex.lastIndex = 0;
+
+  const matchs = regex.exec(content);
+  if (!matchs) process.exit(); // No Data
+
+  const text = matchs[1];
+
 };

@@ -5,7 +5,7 @@ import Parser from 'rss-parser';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 
-import { getRssList } from './lib/rss';
+import { getRssList, updateCheck } from './lib/rss';
 import { toMarkdown } from './lib/markdown';
 import octokit from './lib/octokit';
 
@@ -37,6 +37,8 @@ async function main() {
 
     data[url] = feed;
   }
+
+  updateCheck(content, rssList, data);
 
   const markdown = toMarkdown(data);
   let result = content.replace(
